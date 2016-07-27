@@ -1,49 +1,89 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
 var app = {
+
     // Application Constructor
     initialize: function() {
         this.bindEvents();
     },
+
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
     bindEvents: function() {
-        document.addEventListener('deviceready', this.onDeviceReady, false);
+      document.addEventListener('deviceready', this.onDeviceReady, false);
     },
+
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+      $('.splash').hide();
+      $('.main').show();
+      app.getVerse();
     },
-    // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+    getVerse: function() {
+      jQuery
+        .getJSON("js/verses.json")
+        .done(function(data) {
+          var card = data[Math.floor(data.length * Math.random())];
+          app.showVerse($('.main'), card.verses[Math.floor(card.verses.length * Math.random())]);
+        })
+        .fail(function() {
+          console.log("error");
+        });
+    },
 
-        console.log('Received Event: ' + id);
+    showVerse: function(containerEl, verse) {
+      var regex = /\*[^\*]*\*/ig,
+          words = [],
+          text;
+
+      text = verse.text.replace(regex, function (match) {
+        var wordsInMatch = match.slice(1, -1).split(' '),
+            slots = '';
+        $.merge(words, wordsInMatch);
+        wordsInMatch.forEach(function (word) {
+          slots += '<span class="slot" data-correct-value="' + word + '"></span>';
+        });
+        return slots;
+      });
+
+      var verseEl = $('<div class="verse"><span class="backspace">Borrar</span><span class="intro">' + verse.intro + '</span><span class="text">' + text + '</span></div>');
+      verseEl.appendTo(containerEl);
+
+      words
+        .sort(function() {
+          return .5 - Math.random();
+        })
+        .forEach(function (word) {
+          verseEl.append('<span class="word" data-value="' + word + '">' + word + '</span>');
+        });
+
+      $('.verse .word').click(function (event) {
+        var wordEl = $(event.target);
+        if (wordEl.hasClass('used')) {
+          return;
+        }
+        verseEl.find('.slot:not(.used)').first().html(wordEl.html()).addClass('used');
+        wordEl.addClass('used');
+        $('.verse .backspace').show();
+      });
+
+      $('.verse .backspace').click(function (event) {
+        var wordsEl = verseEl.find('.slot.used'),
+            wordEl = wordsEl.last(),
+            backspaceEl = $(event.target);
+        if (!wordsEl.length) {
+          return;
+        } else if (wordsEl.length == 1) {
+          backspaceEl.hide();
+        }
+        $('.verse .word[data-value="' + wordEl.html() + '"]').last().removeClass('used');
+        wordEl.html('').removeClass('used');
+      });
+
     }
+
 };
