@@ -166,5 +166,16 @@
         },
         "is_top_level": true,
         "variables": {}
+    },
+    "phonegap-facebook-plugin": {
+        "source": {
+            "type": "local",
+            "path": "..\\..\\Downloads\\phonegap-facebook-plugin-master"
+        },
+        "is_top_level": true,
+        "variables": {
+            "APP_ID": "1565427663764053",
+            "APP_NAME": "MemoBiblia"
+        }
     }
 }

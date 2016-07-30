@@ -63,6 +63,11 @@
         },
         "cordova-plugin-whitelist": {
             "PACKAGE_NAME": "com.gascencao.memobiblia"
+        },
+        "phonegap-facebook-plugin": {
+            "APP_ID": "1565427663764053",
+            "APP_NAME": "MemoBiblia",
+            "PACKAGE_NAME": "com.gascencao.memobiblia"
         }
     },
     "dependent_plugins": {
