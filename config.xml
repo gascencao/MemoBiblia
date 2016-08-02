@@ -26,6 +26,8 @@
   <plugin name="cordova-plugin-vibration" source="npm" spec="~2.1.0"/>
   <plugin name="cordova-plugin-whitelist" source="npm" spec="~1.2.1"/>
   <plugin name="phonegap-facebook-plugin" spec="https://github.com/Wizcorp/phonegap-facebook-plugin.git">
+    <variable name="APP_ID" value="1565427663764053" />
+    <variable name="APP_NAME" value="MemoBiblia" />
     <param name="APP_ID" value="1565427663764053" />
     <param name="APP_NAME" value="MemoBiblia" />
   </plugin>
