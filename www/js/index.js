@@ -41,6 +41,7 @@ var app = {
         if (window.cordova.platformId === "browser") {
            facebookConnectPlugin.browserInit('1565427663764053');
         }
+      }
         $('.main').append('<a hred="#" class="facebook_login">Login</a><a hred="#" class="facebook_logout">Logout</a><span class="facebook_status">status</span>');
         $('.facebook_login').click(function () {
           facebookConnectPlugin.login([], function () {
@@ -56,7 +57,6 @@ var app = {
             console.log('Fail');
           });
         });
-      }
       //app.getVerse();
     },
 
