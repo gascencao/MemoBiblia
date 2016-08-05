@@ -1,11 +1,17 @@
 var views = {
-
-  splash: function () {
-    return $('.splash');
-  },
   
+  get: function (name, data) {
+    /*
+    $.get('views/' + name.replace('[^azAz09]', '_') + '.tmpl', function (template) {
+      var compiled = Handlebars.compile(template);
+      callback(compiled(data));
+    });
+    */
+    return Handlebars.templates[name](data);
+  },
+
   main: function () {
-    return $('.main');
+    return $('.app');
   },
 
   login: function () {

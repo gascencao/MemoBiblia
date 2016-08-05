@@ -2,51 +2,53 @@ var controller = {
 
   info: {},
 
-  isBrowser: function() {
-    return window.cordova.platformId === "browser";
+  fn: {
+
+    isBrowser: function() {
+      return window.cordova.platformId === "browser";
+    },
+
+    doMain: function () {
+      controller.info.mainEl = views.main();
+
+      controller.info.mainEl.append(views.get('main', { title: 'Memo Biblia' }));
+
+      controller.info.loginEl = views.login();
+      controller.info.loginEl.click(function () {
+        controller.facebook.login();
+      });
+  
+      controller.info.logoutEl = views.logout();
+      controller.info.logoutEl.click(function () {
+        controller.facebook.logout();
+      });
+  
+      facebookConnectPlugin.getLoginStatus(function () {
+        controller.info.logoutEl.hide();
+      }, function () {
+        controller.info.loginEl.hide();
+      });
+  
+      controller.info.mainEl.append(controller.info.loginEl);
+      controller.info.mainEl.append(controller.info.logoutEl);
+      controller.info.mainEl.show();
+    },
+
   },
 
   init: function () {
-    if (controller.isBrowser()) {
+    if (controller.fn.isBrowser()) {
       controller.info.windowOpenDefault = window.open;
       window.fbAsyncInit = function() {
         facebookConnectPlugin.browserInit('1565427663764053');
-        controller.doMain();
+        controller.fn.doMain();
       }
     }
-
-    controller.info.splashEl = views.splash();
-    controller.info.mainEl = views.main();
-    controller.info.mainEl.hide();
-  },
-  
-  doMain: function () {
-    controller.info.splashEl.hide();
-
-    controller.info.loginEl = views.login();
-    controller.info.loginEl.click(function () {
-      controller.facebook.login();
-    });
-
-    controller.info.logoutEl = views.logout();
-    controller.info.logoutEl.click(function () {
-      controller.facebook.logout();
-    });
-
-    facebookConnectPlugin.getLoginStatus(function () {
-      controller.info.logoutEl.hide();
-    }, function () {
-      controller.info.loginEl.hide();
-    });
-
-    controller.info.mainEl.append(controller.info.loginEl);
-    controller.info.mainEl.append(controller.info.logoutEl);
-    controller.info.mainEl.show();
   },
   
   main: function () {
-    if (!controller.isBrowser()) {
-      controller.doMain();
+    if (!controller.fn.isBrowser()) {
+      controller.fn.doMain();
     }
   },
 
@@ -118,12 +120,12 @@ var controller = {
   facebook: {
     
     exec: function(callback) {
-      if (controller.isBrowser()) {
+      if (controller.fn.isBrowser()) {
         controller.info.windowOpenCurrent = window.open;
         window.open = controller.info.windowOpenDefault;
       }
       callback();
-      if (controller.isBrowser()) {
+      if (controller.fn.isBrowser()) {
         window.open = controller.info.windowOpenCurrent;
       }
     },
