@@ -50,9 +50,19 @@ var facebook = {
   },
 
   getFriends: function (userID, callback) {
-    facebookConnectPlugin.api(userID + '/taggable_friends', [], function (friends) {
-      callback(friends);
-    }, function (err) {});
+    facebookConnectPlugin.api(
+      userID + '/friends', [],
+      function (friends) {
+        callback(friends);
+      }, function (err) {}
+    );
+  },
+
+  inviteFriendsToApp: function () {
+    facebookConnectPlugin.showDialog({
+      method: 'apprequests',
+      message: 'Vení a jugar a Memo Biblia!'
+    }, function (success) {}, function (err) {});
   }
 
 }

@@ -33,7 +33,7 @@ var views = {
 
       return data;
     },
-    
+
     addSlots: function (text, options) {
       return text
         .split(' ')
@@ -44,6 +44,14 @@ var views = {
           }
           return word;
         }).join(' ');
+    },
+
+    getSlots: function (gameEl, used) {
+      return gameEl.find(used ? '.slot.used' : '.slot:not(.used)');
+    },
+
+    getWords: function (gameEl, used, word) {
+      return gameEl.find((used ? '.word.used' : '.word:not(.used)') + (word ? '[data-value="' + word + '"]' : ''));
     }
 
   },
@@ -96,7 +104,11 @@ var views = {
     var friendListEl = views.fn.get('friends', data);
 
     friendListEl.find('.friend[data-content-id]').click(function (event) {
-      controller.startGame($(event.target).attr('data-content-id'));
+      controller.choooseFriend($(event.target).attr('data-content-id'));
+    });
+
+    friendListEl.find('#invite').click(function () {
+      controller.inviteFriendsToApp();
     });
 
     views.info.friendListEl = friendListEl;
@@ -111,32 +123,45 @@ var views = {
     var gameEl = views.fn.get('game', views.fn.prepareGame(data));
 
     gameEl.find('.word').click(function (event) {
-      var wordEl = $(event.target);
-      if (wordEl.hasClass('used')) {
-        return;
-      }
-      gameEl.find('.slot:not(.used)').first().html(wordEl.html()).addClass('used');
-      wordEl.addClass('used');
-      gameEl.find('.backspace').show();
+      controller.chooseWord(gameEl, $(event.target), gameEl.find('.backspace'));
     });
 
     gameEl.find('.backspace').click(function (event) {
-      var wordsEl = gameEl.find('.slot.used'),
-          wordEl = wordsEl.last(),
-          backspaceEl = $(event.target);
-      if (!wordsEl.length) {
-        return;
-      } else if (wordsEl.length == 1) {
-        backspaceEl.hide();
-      }
-      gameEl.find('.word[data-value="' + wordEl.html() + '"]').last().removeClass('used');
-      wordEl.html('').removeClass('used');
+      controller.removeWord(gameEl, $(event.target));
     });
 
     views.info.logoutEl.hide();
     views.info.friendListEl.hide();
 
     views.info.contentEl.append(gameEl);
+  },
+
+  chooseWord: function (gameEl, wordEl, backspaceEl) {
+    if (wordEl.hasClass('used')) {
+      return;
+    }
+
+    views.fn.getSlots(gameEl, false)
+      .first()
+      .html(wordEl.html())
+      .addClass('used');
+
+    wordEl.addClass('used');
+    backspaceEl.show();
+  },
+
+  removeWord: function (gameEl, backspaceEl) {
+    var slotsEl = views.fn.getSlots(gameEl, true),
+        slotEl = slotsEl.last();
+
+    if (slotsEl.length <= 1) {
+      backspaceEl.hide();
+    }
+
+    views.fn.getWords(gameEl, true, slotEl.html())
+      .last().removeClass('used');
+
+    slotEl.html('').removeClass('used');
   }
 
 };

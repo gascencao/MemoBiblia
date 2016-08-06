@@ -1,5 +1,8 @@
-<ul class="friends">
-{{#each data}}
-<li class="friend" data-content-id="{{ id }}"><img src="{{ picture.data.url }}" />{{ name }}</li>
-{{/each}}
-</ul>
+<div class="friends">
+  <ul>
+  {{#each data}}
+  <li class="friend" data-content-id="{{ id }}"><img src="{{ picture.data.url }}" />{{ name }}</li>
+  {{/each}}
+  </ul>
+  <a hred="#" id="invite" class="facebookButton">Invita amigos</a>
+</div>

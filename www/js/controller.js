@@ -65,10 +65,27 @@ var controller = {
     });
   },
 
+  choooseFriend: function (userID) {
+    controller.startGame(userID);
+    controller.inviteFriendToApp(userID);
+  },
+
+  inviteFriendsToApp: function () {
+    facebook.inviteFriendsToApp();
+  },
+
   startGame: function (userID) {
     controller.fn.getVerse(function (verse) {
       views.startGame({ userID: userID, verse: verse});
     });
+  },
+
+  chooseWord: function (gameEl, wordEl, backspaceEl) {
+    views.chooseWord(gameEl, wordEl, backspaceEl);
+  },
+
+  removeWord: function (gameEl, backspaceEl) {
+    views.removeWord(gameEl, backspaceEl);
   }
 
 };
