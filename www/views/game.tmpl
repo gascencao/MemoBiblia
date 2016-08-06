@@ -1,0 +1,13 @@
+<div class="verse">
+  <span class="backspace">Borrar</span>
+  <span class="intro">{{ verse.intro }}</span>
+  <span class="text">
+  {{#add_slots verse.text}}
+    <span class="slot" data-correct-value="{{ this }}"></span>
+  {{/add_slots}}
+  </span>
+  
+  {{#each words}}
+  <span class="word" data-value="{{ this }}">{{ this }}</span>
+  {{/each}}
+</div>

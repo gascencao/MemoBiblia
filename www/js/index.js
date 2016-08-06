@@ -36,6 +36,9 @@ var app = {
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
       controller.main();
-    }
+    },
 
+    isBrowser: function() {
+      return window.cordova.platformId === "browser";
+    }
 };
