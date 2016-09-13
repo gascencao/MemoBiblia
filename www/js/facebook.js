@@ -33,20 +33,26 @@ var facebook = {
     facebook.fn.exec(function () {
       facebookConnectPlugin.login(facebook.info.permissions, function (loginInfo) {
         callback(loginInfo.status == 'connected', loginInfo);
-      }, function (err) {});
+      }, function (err) {
+        console.log(err);
+      });
     });
   },
 
   status: function (callback) {
     facebookConnectPlugin.getLoginStatus(function (loginInfo) {
       callback(loginInfo.status == 'connected', loginInfo);
-    }, function (err) {});
+    }, function (err) {
+      console.log(err);
+    });
   },
 
   logout: function (callback) {
     facebookConnectPlugin.logout(function () {
       callback();
-    }, function (err) {});
+    }, function (err) {
+      console.log(err);
+    });
   },
 
   getFriends: function (userID, callback) {
@@ -54,7 +60,9 @@ var facebook = {
       userID + '/friends', [],
       function (friends) {
         callback(friends);
-      }, function (err) {}
+      }, function (err) {
+        console.log(err);
+      }
     );
   },
 
@@ -62,7 +70,9 @@ var facebook = {
     facebookConnectPlugin.showDialog({
       method: 'apprequests',
       message: 'Vení a jugar a Memo Biblia!'
-    }, function (success) {}, function (err) {});
+    }, function (success) {}, function (err) {
+      console.log(err);
+    });
   }
 
 }
