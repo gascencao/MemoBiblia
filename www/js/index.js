@@ -19,7 +19,7 @@ var app = {
     // Application Constructor
     initialize: function() {
         this.bindEvents();
-        controller.init();
+        //controller.init();
     },
 
     // Bind Event Listeners
@@ -35,7 +35,7 @@ var app = {
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
     onDeviceReady: function() {
-      controller.main();
+      //controller.main();
     },
 
     isBrowser: function() {
